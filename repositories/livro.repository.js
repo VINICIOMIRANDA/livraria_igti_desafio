@@ -1,3 +1,4 @@
+import Autor from "../models/autor.model.js";
 import Livro from "../models/livro.model.js";
 
 async function insertLivro(livro) {
@@ -9,7 +10,7 @@ async function insertLivro(livro) {
 }
 
 async function getLivros() {
-  try {
+  try { 
     return await Livro.findAll();
   } catch (err) {
     throw err;
@@ -18,7 +19,24 @@ async function getLivros() {
 
 async function getLivro(id) {
   try {
-    return await Livro.findByPk(id, { raw: true});
+    return await Livro.findByPk(id, { raw: true });
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getLivrosByAutor(autorId) {
+  try {
+    return await Livro.findAll({
+      where: {
+        autorId,
+      },
+      include: [
+        {
+          model: Autor,
+        },
+      ],
+    });
   } catch (err) {
     throw err;
   }
@@ -49,12 +67,11 @@ async function deleteLivro(id) {
   }
 }
 
-
-  
-  export default {
-    insertLivro,
-    getLivro,
-    getLivros,
-    updateLivro,
-    deleteLivro,
-  };
+export default {
+  insertLivro,
+  getLivro,
+  getLivros,
+  updateLivro,
+  deleteLivro,
+  getLivrosByAutor,
+};

@@ -18,7 +18,7 @@ async function getVendas() {
           model: Livro,
         },
         {
-          model: Cliente,
+          model: Cliente, attributes: ['clienteId','nome', 'email','telefone','endereco']
         },
       ],
     });
@@ -35,18 +35,23 @@ async function getVenda(id) {
   }
 }
 
-/*async function updateVenda(venda) {
+async function getVendasByCliente(clienteId) {
   try {
-    await Venda.update(venda, {
+    return await Venda.findAll({
       where: {
-        vendaId: venda.vendaId,
+        //   productId : productId
+        clienteId,
       },
+      include: [
+        {
+          model: Cliente, attributes: ['clienteId','nome', 'email','telefone','endereco']
+        },
+      ],
     });
-    return await getVenda(venda.vendaId);
   } catch (err) {
     throw err;
   }
-}*/
+}
 
 async function updateVenda(venda) {
   try {
@@ -86,5 +91,5 @@ export default {
   getVenda,
   getVendas,
   updateVenda,
-  deleteVenda,
+  deleteVenda,getVendasByCliente
 };

@@ -8,7 +8,10 @@ async function createLivro(livro) {
   throw new Error("O autor_id informado não existe");
 }
 
-async function getLivros() {
+async function getLivros(autorId) {
+  if (autorId) {
+    return await LivroRepository.getLivrosByAutor(autorId);
+  }
   return await LivroRepository.getLivros();
 }
 

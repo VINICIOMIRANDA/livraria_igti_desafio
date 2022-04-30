@@ -2,7 +2,10 @@ import ClienteRepository from "../repositories/cliente.repository.js";
 import LivroRepository from "../repositories/livro.repository.js";
 import VendaRepository from "../repositories/venda.repository.js";
 
-async function getVendas() {
+async function getVendas(clienteId) {
+  if (clienteId) {
+    return await VendaRepository.getVendasByCliente(clienteId);
+  }
   return await VendaRepository.getVendas();
 }
 

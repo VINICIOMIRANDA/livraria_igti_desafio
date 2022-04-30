@@ -23,7 +23,7 @@ async function createLivro(req, res, next) {
 
 async function getLivros(req, res, next) {
   try {
-    res.send(await LivroService.getLivros());
+    res.send(await LivroService.getLivros(req.query.autorId));
     global.logger.info("GET /livro");
   } catch (err) {
     next(err);
@@ -32,7 +32,7 @@ async function getLivros(req, res, next) {
 
 async function getLivro(req, res, next) {
   try {
-    res.send(await LivroService.getLivro(req.params.id));
+    res.send(await LivroService.getLivro(req.params.id, req.query.autorId));
     global.logger.info("GET /livro ID");
   } catch (err) {
     next(err);

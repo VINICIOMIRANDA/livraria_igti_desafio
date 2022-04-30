@@ -10,7 +10,7 @@ async function insertCliente(cliente) {
 
 async function getClientes(){
     try {
-        return await Cliente.findAll();
+        return await Cliente.findAll({attributes: ['clienteId','nome', 'email','telefone','endereco']});
     } catch (error) {
         
     }
@@ -18,7 +18,7 @@ async function getClientes(){
 
 async function getCliente(id) {
     try {
-      return await Cliente.findByPk(id);
+      return await Cliente.findByPk(id, {attributes: ['clienteId','nome', 'email','telefone','endereco']});
     } catch (err) {
       throw err;
     }
