@@ -63,7 +63,7 @@ async function updateVenda(venda) {
         },
       }
     );
-    return await getSale(venda.vendaId);
+    return await getVenda(venda.vendaId);
   } catch (err) {
     throw err;
   }

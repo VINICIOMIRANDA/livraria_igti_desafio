@@ -44,7 +44,7 @@ async function updateVenda(venda){
     if (!(await ClienteRepository.getCliente(venda.clienteId))) {
       error = "O cliente_id informado não existe.";
     }
-    if (!(await LivroRepository.getProduct(venda.livroId))) {
+    if (!(await LivroRepository.getLivro(venda.livroId))) {
       error += " O livro_id informado não existe.";
     }
     if (error) {

@@ -24,7 +24,7 @@ const Venda = db.define(
   { underscored: true }
 );
 
-Venda.belongsTo(Cliente, { foreignKey: "autorId" });
+Venda.belongsTo(Cliente, { foreignKey: "clienteId" });
 Venda.belongsTo(Livro, { foreignKey: "livroId" });
 
 export default Venda;
