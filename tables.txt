@@ -1,0 +1,39 @@
+CREATE TABLE  Clientes (
+
+	cliente_id SERIAL NOT NULL,
+    nome varchar NOT NULL,
+	email varchar NOT NULL,
+	senha varchar NOT NULL,
+	telefone varchar NOT NULL,
+	endereco varchar NOT NULL,
+	PRIMARY KEY (cliente_id)
+)
+
+CREATE TABLE autores ( 
+	autor_id SERIAL NOT NULL,
+    nome varchar NOT NULL,
+	email varchar NOT NULL,
+	telefone varchar NOT NULL,
+	PRIMARY KEY (autor_id)
+)
+
+CREATE TABLE livros ( 
+	livro_id SERIAL NOT NULL,
+    nome varchar NOT NULL,
+	valor NUMERIC NOT NULL,
+	estoque INT NOT NULL,
+	autor_id INT NOT NULL,
+    PRIMARY KEY (livro_id),
+	CONSTRAINT fk_autores FOREIGN KEY (autor_id) REFERENCES autores (autor_id)
+)
+
+CREATE TABLE vendas ( 
+	venda_id SERIAL NOT NULL,
+	valor NUMERIC NOT NULL,	
+	data DATE NOT NULL,
+	cliente_id INT NOT NULL,
+	livro_id INT NOT NULL,
+    PRIMARY KEY (venda_id),
+	CONSTRAINT fk_clientes FOREIGN KEY (cliente_id) REFERENCES clientes (cliente_id),
+	CONSTRAINT fk_livros FOREIGN KEY (livro_id) REFERENCES livros (livro_id)
+)
