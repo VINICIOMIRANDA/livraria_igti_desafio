@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const AvaliacaoSchema = new mongoose.Schema(
     {
-        name: String,
+        nome: String,
         nota: Number,
         avaliacao: String
     }, { collection:"livroInfo"}

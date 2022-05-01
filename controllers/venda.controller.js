@@ -4,7 +4,7 @@ async function InsertVenda(req, res, next) {
   try {
     let venda = req.body;
 
-    if (!venda.valor || !venda.data || !venda.clienteId || !venda.livroId) {
+    if ( !venda.data || !venda.clienteId || !venda.livroId) {
       throw new Error(
         "Data, codigo do cliente, codigo do livro e valores são obrigatórios."
       );
@@ -20,7 +20,7 @@ async function InsertVenda(req, res, next) {
 async function getVendas(req, res, next) {
   try {
     res.send(
-      await VendaService.getVendas(req.query.clienteId, req.query.livroId)
+      await VendaService.getVendas(req.query.clienteId, req.query.livroId, req.query.autorId)
     );
     global.logger.info("GET /venda");
   } catch (err) {

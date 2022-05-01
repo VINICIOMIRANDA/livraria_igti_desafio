@@ -1,10 +1,17 @@
 import Cliente from "../models/cliente.model.js";
 import Livro from "../models/livro.model.js";
 import Venda from "../models/venda.model.js";
+import LivroRepository from "./livro.repository.js";
 
 async function insertVenda(venda) {
   try {
-    return await Venda.create(venda);
+    const valorVenda = await LivroRepository.getLivro(venda.livroId);
+    return await Venda.create({
+      valor: valorVenda.valor,
+      data: venda.data,
+      clienteId: venda.clienteId,
+      livroId: venda.livroId,
+    });
   } catch (err) {
     throw err;
   }
@@ -18,7 +25,8 @@ async function getVendas() {
           model: Livro,
         },
         {
-          model: Cliente, attributes: ['clienteId','nome', 'email','telefone','endereco']
+          model: Cliente,
+          attributes: ["clienteId", "nome", "email", "telefone", "endereco"],
         },
       ],
     });
@@ -44,7 +52,43 @@ async function getVendasByCliente(clienteId) {
       },
       include: [
         {
-          model: Cliente, attributes: ['clienteId','nome', 'email','telefone','endereco']
+          model: Cliente,
+          attributes: ["clienteId", "nome", "email", "telefone", "endereco"],
+        },
+      ],
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getVendasByLivro(livroId) {
+  try {
+    return await Venda.findAll({
+      where: {
+        //   productId : productId
+        livroId,
+      },
+      include: [
+        {
+          model: Livro,
+        },
+      ],
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getVendasByAutor(autorId) {
+  try {
+    return await Venda.findAll({
+      include: [
+        {
+          model: Livro,
+          where: {
+            autorId,
+          },
         },
       ],
     });
@@ -91,5 +135,8 @@ export default {
   getVenda,
   getVendas,
   updateVenda,
-  deleteVenda,getVendasByCliente
+  deleteVenda,
+  getVendasByCliente,
+  getVendasByLivro,
+  getVendasByAutor,
 };

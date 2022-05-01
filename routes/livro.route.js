@@ -9,9 +9,9 @@ router.put("/", LivroController.updateLivro);
 router.get("/info", LivroController.getLivrosInfo);
 router.post("/info", LivroController.createLivroInfo);
 router.put("/info", LivroController.updateLivroInfo);
+router.post("/avaliacao", LivroController.createAvaliacao);
 router.get("/:id", LivroController.getLivro);
 router.delete("/:id", LivroController.deleteLivro);
-router.post("/avaliacao", LivroController.createAvaliacao);
 router.delete("/:id/avaliacao/:index", LivroController.deleteAvaliacao);
 router.delete("/info/:id", LivroController.deleteLivroInfo);
 

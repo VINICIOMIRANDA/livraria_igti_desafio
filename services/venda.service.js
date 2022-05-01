@@ -2,9 +2,15 @@ import ClienteRepository from "../repositories/cliente.repository.js";
 import LivroRepository from "../repositories/livro.repository.js";
 import VendaRepository from "../repositories/venda.repository.js";
 
-async function getVendas(clienteId) {
+async function getVendas(clienteId, livroId, autorId) {
   if (clienteId) {
     return await VendaRepository.getVendasByCliente(clienteId);
+  }
+  if (livroId) {
+    return await VendaRepository.getVendasByLivro(livroId);
+  }
+  if (autorId) {
+    return await VendaRepository.getVendasByAutor(autorId);
   }
   return await VendaRepository.getVendas();
 }
@@ -42,18 +48,18 @@ async function insertVenda(venda) {
   }
 }
 
-async function updateVenda(venda){
-    let error = "";
-    if (!(await ClienteRepository.getCliente(venda.clienteId))) {
-      error = "O cliente_id informado não existe.";
-    }
-    if (!(await LivroRepository.getLivro(venda.livroId))) {
-      error += " O livro_id informado não existe.";
-    }
-    if (error) {
-      throw new Error(error);
-    }
-    return await VendaRepository.updateVenda(venda);
+async function updateVenda(venda) {
+  let error = "";
+  if (!(await ClienteRepository.getCliente(venda.clienteId))) {
+    error = "O cliente_id informado não existe.";
+  }
+  if (!(await LivroRepository.getLivro(venda.livroId))) {
+    error += " O livro_id informado não existe.";
+  }
+  if (error) {
+    throw new Error(error);
+  }
+  return await VendaRepository.updateVenda(venda);
 }
 
 export default {
@@ -61,5 +67,5 @@ export default {
   getVendas,
   deleteVenda,
   insertVenda,
-  updateVenda
+  updateVenda,
 };

@@ -1,6 +1,8 @@
 import AutorRepository from "../repositories/autor.repository.js";
 import LivroRepository from "../repositories/livro.repository.js";
 import LivroInfoRepository from "../repositories/livroInfo.repository.js";
+import VendaRepository from "../repositories/venda.repository.js";
+
 
 async function createLivro(livro) {
   if (await AutorRepository.getAutor(livro.autorId)) {
@@ -18,12 +20,16 @@ async function getLivros(autorId) {
 
 async function getLivro(id) {
   const livro = await LivroRepository.getLivro(id);
-  livro.info = await livroInfoRepository.getLivrosInfo(parseInt(id));
+  livro.info = await LivroInfoRepository.getLivroInfo(parseInt(id));
 
   return livro;
 }
 
 async function deleteLivro(id) {
+  const vendas = await VendaRepository.getVendasByLivro(id);
+  if (vendas.length > 0) {
+    throw new Error ("Existe vendas cadatrados para esse livro, não é possível excluir");
+  }
   await LivroRepository.deleteLivro(id);
 }
 

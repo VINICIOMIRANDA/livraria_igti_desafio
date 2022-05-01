@@ -10,7 +10,7 @@ async function insertLivro(livro) {
 }
 
 async function getLivros() {
-  try { 
+  try {
     return await Livro.findAll();
   } catch (err) {
     throw err;
@@ -42,13 +42,22 @@ async function getLivrosByAutor(autorId) {
   }
 }
 
+
+
+
 async function updateLivro(livro) {
   try {
-    await Livro.update(livro, {
-      where: {
-        livroId: livro.livroId,
+    await Livro.update(
+      {
+        valor: livro.valor,
+        estoque: livro.estoque,
       },
-    });
+      {
+        where: {
+          livroId: livro.livroId,
+        },
+      }
+    );
     return await getLivro(livro.livroId);
   } catch (err) {
     throw err;
