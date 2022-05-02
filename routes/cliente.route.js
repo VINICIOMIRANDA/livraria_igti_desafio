@@ -1,13 +1,14 @@
 import express from "express";
 import ClienteController from "../controllers/cliente.controller.js";
 
+
 const router = express.Router();
 
-router.post("/", ClienteController.createCliente);
-router.get("/", ClienteController.getClientes);
-router.get("/:id", ClienteController.getCliente);
+router.post("/",  ClienteController.createCliente);
+router.get("/",  ClienteController.getClientes);
+router.get("/:id",  ClienteController.getCliente);
 router.delete("/:id", ClienteController.deleteCliente);
 router.put("/", ClienteController.updateCliente);
-
+router.get("/auth",  ClienteController.getClienteByEmailSenha);
 
 export default router;

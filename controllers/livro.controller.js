@@ -2,16 +2,21 @@ import LivroService from "../services/livro.service.js";
 
 async function createLivro(req, res, next) {
   try {
-    let livro = req.body;
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      let livro = req.body;
 
-    if (!livro.nome || !livro.valor || !livro.estoque || !livro.autorId) {
-      throw new Error(
-        "Titulo ,Valor, Estoque e Codigo do Autor  são obrigatórios."
-      );
+      if (!livro.nome || !livro.valor || !livro.estoque || !livro.autorId) {
+        throw new Error(
+          "Titulo ,Valor, Estoque e Codigo do Autor  são obrigatórios."
+        );
+      }
+      livro = await LivroService.createLivro(livro);
+      res.send(livro);
+      global.logger.info(`POST /livro - ${JSON.stringify(livro)}`);
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
     }
-    livro = await LivroService.createLivro(livro);
-    res.send(livro);
-    global.logger.info(`POST /livro - ${JSON.stringify(livro)}`);
   } catch (err) {
     next(err);
   }
@@ -37,9 +42,14 @@ async function getLivro(req, res, next) {
 
 async function deleteLivro(req, res, next) {
   try {
-    await LivroService.deleteLivro(req.params.id);
-    global.logger.info("DELETE /livro ID");
-    res.end();
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      await LivroService.deleteLivro(req.params.id);
+      global.logger.info("DELETE /livro ID");
+      res.end();
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
+    }
   } catch (err) {
     next(err);
   }
@@ -47,22 +57,27 @@ async function deleteLivro(req, res, next) {
 
 async function updateLivro(req, res, next) {
   try {
-    let livro = req.body;
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      let livro = req.body;
 
-    if (
-      !livro.livroId ||
-      !livro.nome ||
-      !livro.valor ||
-      !livro.estoque ||
-      !livro.autorId
-    ) {
-      throw new Error(
-        "Titulo ,Valor, Estoque e Codigo do Autor  são obrigatórios"
-      );
+      if (
+        !livro.livroId ||
+        !livro.nome ||
+        !livro.valor ||
+        !livro.estoque ||
+        !livro.autorId
+      ) {
+        throw new Error(
+          "Titulo ,Valor, Estoque e Codigo do Autor  são obrigatórios"
+        );
+      }
+      livro = await LivroService.updateLivro(livro);
+      res.send(livro);
+      global.logger.info(`PUT /livro - ${JSON.stringify(livro)}`);
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
     }
-    livro = await LivroService.updateLivro(livro);
-    res.send(livro);
-    global.logger.info(`PUT /livro - ${JSON.stringify(livro)}`);
   } catch (err) {
     next(err);
   }

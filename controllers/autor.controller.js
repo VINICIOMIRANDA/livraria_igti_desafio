@@ -2,19 +2,19 @@ import AutorService from "../services/autor.service.js";
 
 async function createAutor(req, res, next) {
   try {
-    let autor = req.body;
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      let autor = req.body;
 
-    if (
-      !autor.nome ||
-      !autor.email ||
-      !autor.telefone 
-      
-    ) {
-      throw new Error("Nome,Email e Telefone  são obrigatórios.");
+      if (!autor.nome || !autor.email || !autor.telefone) {
+        throw new Error("Nome,Email e Telefone  são obrigatórios.");
+      }
+      autor = await AutorService.createAutor(autor);
+      res.send(autor);
+      global.logger.info(`POST /autor - ${JSON.stringify(autor)}`);
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
     }
-    autor = await AutorService.createAutor(autor);
-    res.send(autor);
-    global.logger.info(`POST /autor - ${JSON.stringify(autor)}`);
   } catch (err) {
     next(err);
   }
@@ -38,12 +38,16 @@ async function getAutor(req, res, next) {
   }
 }
 
-
 async function deleteAutor(req, res, next) {
   try {
-   await AutorService.deleteAutor(req.params.id);
-    global.logger.info("DELETE /autor ID");
-    res.end();
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      await AutorService.deleteAutor(req.params.id);
+      global.logger.info("DELETE /autor ID");
+      res.end();
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
+    }
   } catch (err) {
     next(err);
   }
@@ -51,23 +55,22 @@ async function deleteAutor(req, res, next) {
 
 async function updateAutor(req, res, next) {
   try {
-    let autor = req.body;
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      let autor = req.body;
 
-    if (
-      !autor.autorId ||
-      !autor.nome ||
-      !autor.email ||  
-      !autor.telefone 
-    
-    ) {
-      throw new Error("Autor ID, Nome,Email e Telefone  são obrigatórios.");
+      if (!autor.autorId || !autor.nome || !autor.email || !autor.telefone) {
+        throw new Error("Autor ID, Nome,Email e Telefone  são obrigatórios.");
+      }
+      autor = await AutorService.updateAutor(autor);
+      res.send(autor);
+      global.logger.info(`PUT /autor - ${JSON.stringify(autor)}`);
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
     }
-    autor = await AutorService.updateAutor(autor);
-    res.send(autor);
-    global.logger.info(`PUT /autor - ${JSON.stringify(autor)}`);
   } catch (err) {
     next(err);
   }
 }
 
-export default { createAutor, getAutores, getAutor, deleteAutor,updateAutor};
+export default { createAutor, getAutores, getAutor, deleteAutor, updateAutor };

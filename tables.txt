@@ -5,7 +5,7 @@ CREATE TABLE  Clientes (
 	email varchar NOT NULL,
 	senha varchar NOT NULL,
 	telefone varchar NOT NULL,
-	endereco varchar NOT NULL,
+	endereco varchar NOT NULL UNIQUE,
 	PRIMARY KEY (cliente_id)
 )
 
