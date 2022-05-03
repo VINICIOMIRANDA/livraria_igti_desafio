@@ -39,6 +39,19 @@ async function getClienteByEmailSenha(email) {
   }
 }
 
+
+async function getClienteByEmail(email) {
+  try {
+    return await Cliente.findOne({
+      where: {
+        email,
+      },
+      raw: true,
+    });
+  } catch (err) {
+    throw err;
+  }
+}
 async function updateCliente(cliente) {
   try {
     await Cliente.update(cliente, {
@@ -70,5 +83,5 @@ export default {
   getClientes,
   updateCliente,
   deleteCliente,
-  getClienteByEmailSenha,
+  getClienteByEmailSenha,getClienteByEmail
 };

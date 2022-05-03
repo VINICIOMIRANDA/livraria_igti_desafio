@@ -1,6 +1,7 @@
 /node_modules
 /repositories/db.js
 /repositories/mongo.db.js
-store-api.log
+livraria-api.log
 EndPoints.txt
 outros.txt
+/coverage

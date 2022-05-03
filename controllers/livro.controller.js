@@ -129,11 +129,16 @@ async function createAvaliacao(req, res, next) {
 
 async function deleteAvaliacao(req, res, next) {
   try {
-    await LivroService.deleteAvaliacao(req.params.id, req.params.index);
-    res.end();
-    global.logger.info(
-      `DELETE Avaliação /livro/${req.params.id}/avaliacao/${req.params.index}`
-    );
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      await LivroService.deleteAvaliacao(req.params.id, req.params.index);
+      res.end();
+      global.logger.info(
+        `DELETE Avaliação /livro/${req.params.id}/avaliacao/${req.params.index}`
+      );
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
+    }
   } catch (err) {
     next(err);
   }
@@ -149,8 +154,13 @@ async function getLivrosInfo(req, res, next) {
 
 async function deleteLivroInfo(req, res, next) {
   try {
-    res.send(await LivroService.deleteLivrosInfo(req.params.id));
-    global.logger.info("DELETE /livro/info ");
+    let autorizacao = req.auth.user;
+    if (autorizacao == "admin") {
+      res.send(await LivroService.deleteLivrosInfo(req.params.id));
+      global.logger.info("DELETE /livro/info ");
+    } else {
+      throw new Error(`Usuário ${autorizacao} sem permissão!`);
+    }
   } catch (err) {
     next(err);
   }

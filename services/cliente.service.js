@@ -1,3 +1,4 @@
+import basicAuth from "express-basic-auth";
 import ClienteRepository from "../repositories/cliente.repository.js";
 import VendaRepository from "../repositories/venda.repository.js";
 
@@ -30,6 +31,14 @@ async function updateCliente(cliente) {
   return await ClienteRepository.updateCliente(cliente);
 }
 
+async function verificaLogin(email, senha){
+  const cliente = await ClienteRepository.getClienteByEmail(email);
+  if (!cliente){
+    return false;
+  }
+  return basicAuth.safeCompare(cliente.senha, senha);
+}
+
 export default {
   createCliente,
   getClientes,
@@ -37,4 +46,5 @@ export default {
   deleteCliente,
   updateCliente,
   getClienteByEmailSenha,
+  verificaLogin
 };
