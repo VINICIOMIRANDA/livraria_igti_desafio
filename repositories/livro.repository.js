@@ -43,6 +43,14 @@ async function getLivrosByAutor(autorId) {
 }
 
 
+async function getLivrosCount(){
+  try {
+    return await Livro.count();
+  } catch (err) {
+    throw err;
+  }
+}
+
 
 
 async function updateLivro(livro) {
@@ -82,5 +90,5 @@ export default {
   getLivros,
   updateLivro,
   deleteLivro,
-  getLivrosByAutor,
+  getLivrosByAutor,getLivrosCount
 };

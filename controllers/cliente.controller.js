@@ -45,6 +45,7 @@ async function getClientes(req, res, next) {
 
 async function getCliente(req, res, next) {
   try {
+    let autorizacao = req.auth.user;
     if (autorizacao == "admin") {
       res.send(await ClienteService.getCliente(req.params.id));
       global.logger.info("GET /cliente ID");
